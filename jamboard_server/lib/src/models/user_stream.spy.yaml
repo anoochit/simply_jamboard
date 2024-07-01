@@ -1,0 +1,5 @@
+class: UserStream
+table: user_stream
+fields:
+  board: Board?, relation
+  user: module:auth:UserInfo?, relation

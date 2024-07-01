@@ -1,0 +1,8 @@
+class: Board
+table: board
+fields:
+  title: String
+  uuid: String?
+  content: String
+  modifiedAt: DateTime
+  owner: module:auth:UserInfo?, relation
