@@ -69,6 +69,24 @@ class Endpoints extends _i1.EndpointDispatch {
             params['title'],
           ),
         ),
+        'getBoard': _i1.MethodConnector(
+          name: 'getBoard',
+          params: {
+            'uuid': _i1.ParameterDescription(
+              name: 'uuid',
+              type: _i1.getType<String>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['board'] as _i2.BoardEndpoint).getBoard(
+            session,
+            params['uuid'],
+          ),
+        ),
       },
     );
     connectors['example'] = _i1.EndpointConnector(

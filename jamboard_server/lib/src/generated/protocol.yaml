@@ -1,6 +1,7 @@
 board:
   - getBoards:
   - addBoard:
+  - getBoard:
 example:
   - hello:
 userStream:

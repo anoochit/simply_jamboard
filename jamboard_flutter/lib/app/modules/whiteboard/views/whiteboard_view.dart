@@ -1,24 +1,32 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../serverpod.dart';
+import '../../../views/views/avatar_icon_view.dart';
 import '../controllers/whiteboard_controller.dart';
 
 class WhiteboardView extends GetView<WhiteboardController> {
-  const WhiteboardView({Key? key}) : super(key: key);
+  const WhiteboardView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WhiteboardView'),
-        centerTitle: true,
+        actions: [
+          AvatarIconView(
+            user: sessionManager.signedInUser,
+            onTap: () {
+              log('goto profile page');
+            },
+          ),
+        ],
       ),
-      body: const Center(
-        child: Text(
-          'WhiteboardView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      body: Obx(() {
+        final data = controller.data;
+        return Text('$data');
+      }),
     );
   }
 }

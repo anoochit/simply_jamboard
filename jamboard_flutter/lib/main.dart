@@ -24,6 +24,9 @@ void main() {
           surfaceTintColor: Colors.blue,
           backgroundColor: Colors.blue,
         ),
+        cardTheme: CardTheme(
+          elevation: 0.5,
+        ),
       ),
     ),
   );

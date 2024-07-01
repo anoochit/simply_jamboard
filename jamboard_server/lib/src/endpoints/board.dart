@@ -27,6 +27,16 @@ class BoardEndpoint extends Endpoint {
     return await Board.db.insertRow(session, row);
   }
 
+  // get board data
+  Future<Board?> getBoard(Session session, String uuid) async {
+    final board = await Board.db.findFirstRow(
+      session,
+      where: (p) => p.uuid.equals(uuid),
+    );
+
+    return board;
+  }
+
   // stream opened
   @override
   Future<void> streamOpened(StreamingSession session) async {

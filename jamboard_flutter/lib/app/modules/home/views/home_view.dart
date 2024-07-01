@@ -3,11 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:jamboard_flutter/app/data/utils/responsive_utils.dart';
-import 'package:jamboard_flutter/app/modules/home/views/board_thumbnail_view.dart';
-import 'package:jamboard_flutter/app/views/views/avatar_icon_view.dart';
-import 'package:jamboard_flutter/serverpod.dart';
+import 'package:jamboard_flutter/app/routes/app_pages.dart';
+import '../../../../serverpod.dart';
+import '../../../data/utils/responsive_utils.dart';
+import '../../../views/views/avatar_icon_view.dart';
 import '../controllers/home_controller.dart';
+import 'board_thumbnail_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -19,21 +20,38 @@ class HomeView extends GetView<HomeController> {
         actions: [
           AvatarIconView(
             user: sessionManager.signedInUser,
+            onTap: () {
+              log('goto profile page');
+            },
           ),
         ],
       ),
       body: Obx(
-        () => GridView(
-          padding: EdgeInsets.all(8.0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: ResponsiveUtils.gridItem(context),
-            mainAxisSpacing: 4.0,
-            crossAxisSpacing: 4.0,
+        () => RefreshIndicator(
+          onRefresh: () async {
+            //
+            await Future.delayed(Duration.zero, () {
+              controller.getBoards();
+            });
+          },
+          child: GridView(
+            padding: const EdgeInsets.all(8.0),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: ResponsiveUtils.gridItem(context),
+              mainAxisSpacing: 4.0,
+              crossAxisSpacing: 4.0,
+            ),
+            children: List.generate(controller.listBoards.length, (index) {
+              final board = controller.listBoards[index];
+              return BoardThumbnailView(
+                board: board,
+                onTap: () {
+                  Get.toNamed(Routes.WHITEBOARD,
+                      parameters: {"id": board.uuid!});
+                },
+              );
+            }),
           ),
-          children: List.generate(controller.listBoards.length, (index) {
-            final board = controller.listBoards[index];
-            return BoardThumbnailView(board: board);
-          }),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -42,7 +60,7 @@ class HomeView extends GetView<HomeController> {
           final board = await controller.addBoard(
             title: '${DateTime.now().microsecondsSinceEpoch}',
           );
-          print('board ${board.uuid}');
+          log('board ${board.uuid}');
         },
         child: const Icon(Icons.add),
       ),

@@ -23,6 +23,7 @@ class AppPages {
       middlewares: [
         RouteGuard(),
       ],
+      transition: Transition.noTransition,
     ),
     GetPage(
       name: _Paths.WHITEBOARD,
@@ -31,11 +32,13 @@ class AppPages {
       middlewares: [
         RouteGuard(),
       ],
+      transition: Transition.noTransition,
     ),
     GetPage(
       name: _Paths.SIGNIN,
       page: () => const SigninView(),
       binding: SigninBinding(),
+      transition: Transition.noTransition,
     ),
   ];
 }

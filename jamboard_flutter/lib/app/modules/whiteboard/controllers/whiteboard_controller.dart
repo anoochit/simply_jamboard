@@ -2,10 +2,31 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:jamboard_client/jamboard_client.dart';
-
-import '../../../../serverpod.dart';
+import 'package:jamboard_flutter/serverpod.dart';
 
 class WhiteboardController extends GetxController {
+  RxString data = ''.obs;
+  Board? board;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // load board data
+    loadBoard();
+  }
+
+  Future<void> loadBoard() async {
+    final uuid = Get.parameters['id'];
+    if (uuid != null) {
+      log('load board = $uuid');
+      board = await client.board.getBoard(uuid);
+      data.value = board!.content;
+    } else {
+      board = null;
+      data.value = '{}';
+    }
+  }
+
   /*
   late StreamingConnectionHandler? connectionHandler;
 

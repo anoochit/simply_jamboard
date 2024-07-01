@@ -36,6 +36,13 @@ class EndpointBoard extends _i1.EndpointRef {
         'addBoard',
         {'title': title},
       );
+
+  _i2.Future<_i3.Board?> getBoard(String uuid) =>
+      caller.callServerEndpoint<_i3.Board?>(
+        'board',
+        'getBoard',
+        {'uuid': uuid},
+      );
 }
 
 /// {@category Endpoint}
