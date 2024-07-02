@@ -12,8 +12,6 @@ class BoardThumbnailView extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    final title = board.title;
-    // final cover = board.cover!.buffer.asInt8List();
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(

@@ -49,7 +49,7 @@ class WhiteboardView extends GetView<WhiteboardController> {
               final json = controller.drawingController.getJsonList();
               // update content
               controller.data.value = jsonEncode(json);
-              log(controller.data.value);
+              // log(controller.data.value);
               // get cover
               controller.drawingController.getImageData().then((cover) {
                 // save board
