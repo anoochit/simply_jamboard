@@ -45,11 +45,13 @@ class WhiteboardView extends GetView<WhiteboardController> {
               height: MediaQuery.sizeOf(context).height,
             ),
             onPointerUp: (pue) {
+              // get content
               final json = controller.drawingController.getJsonList();
+              // update content
               controller.data.value = jsonEncode(json);
               log(controller.data.value);
-              controller.saveDraw(content: controller.data.value);
-              // log('${jsonEncode(json.toJson())}');
+              // save
+              controller.saveBoard();
             },
           ),
         ),

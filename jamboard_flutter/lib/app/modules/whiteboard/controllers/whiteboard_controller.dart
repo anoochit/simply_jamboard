@@ -85,8 +85,10 @@ class WhiteboardController extends GetxController {
   }
 
   // save draw content
-  saveDraw({required String content}) async {
+  saveBoard() async {
     if (board != null) {
+      final json = drawingController.getJsonList();
+      final content = jsonEncode(json);
       log('save board');
       await client.board.saveBoard(board!.id!, content);
     }
@@ -121,7 +123,7 @@ class WhiteboardController extends GetxController {
   void onClose() {
     log('on close');
     // save draw
-    saveDraw(content: data.value);
+    saveBoard();
 
     // stream close
     streamClose();
