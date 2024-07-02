@@ -9,11 +9,12 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import '../endpoints/board.dart' as _i2;
+import '../endpoints/board_endpoint.dart' as _i2;
 import '../endpoints/example_endpoint.dart' as _i3;
 import '../endpoints/userstream_endpoint.dart' as _i4;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i5;
-import 'package:serverpod_chat_server/serverpod_chat_server.dart' as _i6;
+import 'dart:typed_data' as _i5;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i6;
+import 'package:serverpod_chat_server/serverpod_chat_server.dart' as _i7;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -100,6 +101,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String>(),
               nullable: false,
             ),
+            'cover': _i1.ParameterDescription(
+              name: 'cover',
+              type: _i1.getType<_i5.ByteData>(),
+              nullable: false,
+            ),
           },
           call: (
             _i1.Session session,
@@ -109,6 +115,7 @@ class Endpoints extends _i1.EndpointDispatch {
             session,
             params['id'],
             params['content'],
+            params['cover'],
           ),
         ),
       },
@@ -161,7 +168,7 @@ class Endpoints extends _i1.EndpointDispatch {
         )
       },
     );
-    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
-    modules['serverpod_chat'] = _i6.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i6.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_chat'] = _i7.Endpoints()..initializeEndpoints(server);
   }
 }

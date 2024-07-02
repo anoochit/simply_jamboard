@@ -12,6 +12,8 @@ class BoardThumbnailView extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    final title = board.title;
+    // final cover = board.cover!.buffer.asInt8List();
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -29,9 +31,12 @@ class BoardThumbnailView extends GetView {
       child: InkWell(
         onTap: () => onTap(),
         child: Center(
-          child: Text(
-            '${board.uuid}',
-          ),
+          child: (board.cover != null)
+              ? Image.memory(
+                  board.cover!.buffer.asUint8List(),
+                  errorBuilder: (context, error, stackTrace) => Container(),
+                )
+              : Container(),
         ),
       ),
     );

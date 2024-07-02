@@ -41,7 +41,7 @@ class HomeView extends GetView<HomeController> {
               crossAxisCount: ResponsiveUtils.gridItem(context),
               mainAxisSpacing: 12.0,
               crossAxisSpacing: 12.0,
-              childAspectRatio: 3 / 2.4,
+              childAspectRatio: 3 / 2,
             ),
             children: List.generate(controller.listBoards.length, (index) {
               final board = controller.listBoards[index];

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:jamboard_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
 
@@ -40,11 +42,13 @@ class BoardEndpoint extends Endpoint {
   }
 
   // save board
-  Future<void> saveBoard(Session session, int id, String content) async {
+  Future<void> saveBoard(
+      Session session, int id, String content, ByteData cover) async {
     final board = await Board.db.findById(session, id);
     if (board != null) {
       board.content = content;
       board.modifiedAt = DateTime.now();
+      board.cover = cover;
       await Board.db.updateRow(session, board);
     }
   }

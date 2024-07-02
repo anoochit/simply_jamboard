@@ -11,10 +11,11 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:jamboard_client/src/protocol/board.dart' as _i3;
-import 'package:jamboard_client/src/protocol/user_stream.dart' as _i4;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i5;
-import 'package:serverpod_chat_client/serverpod_chat_client.dart' as _i6;
-import 'protocol.dart' as _i7;
+import 'dart:typed_data' as _i4;
+import 'package:jamboard_client/src/protocol/user_stream.dart' as _i5;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i6;
+import 'package:serverpod_chat_client/serverpod_chat_client.dart' as _i7;
+import 'protocol.dart' as _i8;
 
 /// {@category Endpoint}
 class EndpointBoard extends _i1.EndpointRef {
@@ -47,6 +48,7 @@ class EndpointBoard extends _i1.EndpointRef {
   _i2.Future<void> saveBoard(
     int id,
     String content,
+    _i4.ByteData cover,
   ) =>
       caller.callServerEndpoint<void>(
         'board',
@@ -54,6 +56,7 @@ class EndpointBoard extends _i1.EndpointRef {
         {
           'id': id,
           'content': content,
+          'cover': cover,
         },
       );
 }
@@ -79,8 +82,8 @@ class EndpointUserStream extends _i1.EndpointRef {
   @override
   String get name => 'userStream';
 
-  _i2.Future<List<_i4.UserStream>> getUserStream(int boardId) =>
-      caller.callServerEndpoint<List<_i4.UserStream>>(
+  _i2.Future<List<_i5.UserStream>> getUserStream(int boardId) =>
+      caller.callServerEndpoint<List<_i5.UserStream>>(
         'userStream',
         'getUserStream',
         {'boardId': boardId},
@@ -89,13 +92,13 @@ class EndpointUserStream extends _i1.EndpointRef {
 
 class _Modules {
   _Modules(Client client) {
-    auth = _i5.Caller(client);
-    chat = _i6.Caller(client);
+    auth = _i6.Caller(client);
+    chat = _i7.Caller(client);
   }
 
-  late final _i5.Caller auth;
+  late final _i6.Caller auth;
 
-  late final _i6.Caller chat;
+  late final _i7.Caller chat;
 }
 
 class Client extends _i1.ServerpodClient {
@@ -113,7 +116,7 @@ class Client extends _i1.ServerpodClient {
     Function(_i1.MethodCallContext)? onSucceededCall,
   }) : super(
           host,
-          _i7.Protocol(),
+          _i8.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,

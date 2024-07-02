@@ -62,6 +62,12 @@ class Protocol extends _i1.SerializationManagerServer {
           dartType: 'String',
         ),
         _i2.ColumnDefinition(
+          name: 'cover',
+          columnType: _i2.ColumnType.bytea,
+          isNullable: true,
+          dartType: 'dart:typed_data:ByteData?',
+        ),
+        _i2.ColumnDefinition(
           name: 'modifiedAt',
           columnType: _i2.ColumnType.timestampWithoutTimeZone,
           isNullable: false,

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_drawing_board/paint_contents.dart';
@@ -85,12 +86,13 @@ class WhiteboardController extends GetxController {
   }
 
   // save draw content
-  saveBoard() async {
+  saveBoard({required String content, ByteData? cover}) async {
     if (board != null) {
       final json = drawingController.getJsonList();
       final content = jsonEncode(json);
       log('save board');
-      await client.board.saveBoard(board!.id!, content);
+      // get cover
+      client.board.saveBoard(board!.id!, content, cover!);
     }
   }
 
@@ -123,7 +125,6 @@ class WhiteboardController extends GetxController {
   void onClose() {
     log('on close');
     // save draw
-    saveBoard();
 
     // stream close
     streamClose();

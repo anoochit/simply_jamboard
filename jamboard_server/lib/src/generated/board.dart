@@ -9,7 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
-import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
+import 'dart:typed_data' as _i2;
+import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
@@ -18,6 +19,7 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
     required this.title,
     this.uuid,
     required this.content,
+    this.cover,
     required this.modifiedAt,
     required this.ownerId,
     this.owner,
@@ -28,9 +30,10 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
     required String title,
     String? uuid,
     required String content,
+    _i2.ByteData? cover,
     required DateTime modifiedAt,
     required int ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   }) = _BoardImpl;
 
   factory Board.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -39,12 +42,15 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
       title: jsonSerialization['title'] as String,
       uuid: jsonSerialization['uuid'] as String?,
       content: jsonSerialization['content'] as String,
+      cover: jsonSerialization['cover'] == null
+          ? null
+          : _i1.ByteDataJsonExtension.fromJson(jsonSerialization['cover']),
       modifiedAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['modifiedAt']),
       ownerId: jsonSerialization['ownerId'] as int,
       owner: jsonSerialization['owner'] == null
           ? null
-          : _i2.UserInfo.fromJson(
+          : _i3.UserInfo.fromJson(
               (jsonSerialization['owner'] as Map<String, dynamic>)),
     );
   }
@@ -59,11 +65,13 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   String content;
 
+  _i2.ByteData? cover;
+
   DateTime modifiedAt;
 
   int ownerId;
 
-  _i2.UserInfo? owner;
+  _i3.UserInfo? owner;
 
   @override
   _i1.Table get table => t;
@@ -73,9 +81,10 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
     String? title,
     String? uuid,
     String? content,
+    _i2.ByteData? cover,
     DateTime? modifiedAt,
     int? ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -84,6 +93,7 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
       'title': title,
       if (uuid != null) 'uuid': uuid,
       'content': content,
+      if (cover != null) 'cover': cover?.toJson(),
       'modifiedAt': modifiedAt.toJson(),
       'ownerId': ownerId,
       if (owner != null) 'owner': owner?.toJson(),
@@ -97,13 +107,14 @@ abstract class Board extends _i1.TableRow implements _i1.ProtocolSerialization {
       'title': title,
       if (uuid != null) 'uuid': uuid,
       'content': content,
+      if (cover != null) 'cover': cover?.toJson(),
       'modifiedAt': modifiedAt.toJson(),
       'ownerId': ownerId,
       if (owner != null) 'owner': owner?.toJsonForProtocol(),
     };
   }
 
-  static BoardInclude include({_i2.UserInfoInclude? owner}) {
+  static BoardInclude include({_i3.UserInfoInclude? owner}) {
     return BoardInclude._(owner: owner);
   }
 
@@ -141,14 +152,16 @@ class _BoardImpl extends Board {
     required String title,
     String? uuid,
     required String content,
+    _i2.ByteData? cover,
     required DateTime modifiedAt,
     required int ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   }) : super._(
           id: id,
           title: title,
           uuid: uuid,
           content: content,
+          cover: cover,
           modifiedAt: modifiedAt,
           ownerId: ownerId,
           owner: owner,
@@ -160,6 +173,7 @@ class _BoardImpl extends Board {
     String? title,
     Object? uuid = _Undefined,
     String? content,
+    Object? cover = _Undefined,
     DateTime? modifiedAt,
     int? ownerId,
     Object? owner = _Undefined,
@@ -169,9 +183,10 @@ class _BoardImpl extends Board {
       title: title ?? this.title,
       uuid: uuid is String? ? uuid : this.uuid,
       content: content ?? this.content,
+      cover: cover is _i2.ByteData? ? cover : this.cover?.clone(),
       modifiedAt: modifiedAt ?? this.modifiedAt,
       ownerId: ownerId ?? this.ownerId,
-      owner: owner is _i2.UserInfo? ? owner : this.owner?.copyWith(),
+      owner: owner is _i3.UserInfo? ? owner : this.owner?.copyWith(),
     );
   }
 }
@@ -190,6 +205,10 @@ class BoardTable extends _i1.Table {
       'content',
       this,
     );
+    cover = _i1.ColumnByteData(
+      'cover',
+      this,
+    );
     modifiedAt = _i1.ColumnDateTime(
       'modifiedAt',
       this,
@@ -206,21 +225,23 @@ class BoardTable extends _i1.Table {
 
   late final _i1.ColumnString content;
 
+  late final _i1.ColumnByteData cover;
+
   late final _i1.ColumnDateTime modifiedAt;
 
   late final _i1.ColumnInt ownerId;
 
-  _i2.UserInfoTable? _owner;
+  _i3.UserInfoTable? _owner;
 
-  _i2.UserInfoTable get owner {
+  _i3.UserInfoTable get owner {
     if (_owner != null) return _owner!;
     _owner = _i1.createRelationTable(
       relationFieldName: 'owner',
       field: Board.t.ownerId,
-      foreignField: _i2.UserInfo.t.id,
+      foreignField: _i3.UserInfo.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
-          _i2.UserInfoTable(tableRelation: foreignTableRelation),
+          _i3.UserInfoTable(tableRelation: foreignTableRelation),
     );
     return _owner!;
   }
@@ -231,6 +252,7 @@ class BoardTable extends _i1.Table {
         title,
         uuid,
         content,
+        cover,
         modifiedAt,
         ownerId,
       ];
@@ -245,11 +267,11 @@ class BoardTable extends _i1.Table {
 }
 
 class BoardInclude extends _i1.IncludeObject {
-  BoardInclude._({_i2.UserInfoInclude? owner}) {
+  BoardInclude._({_i3.UserInfoInclude? owner}) {
     _owner = owner;
   }
 
-  _i2.UserInfoInclude? _owner;
+  _i3.UserInfoInclude? _owner;
 
   @override
   Map<String, _i1.Include?> get includes => {'owner': _owner};
@@ -441,7 +463,7 @@ class BoardAttachRowRepository {
   Future<void> owner(
     _i1.Session session,
     Board board,
-    _i2.UserInfo owner,
+    _i3.UserInfo owner,
   ) async {
     if (board.id == null) {
       throw ArgumentError.notNull('board.id');

@@ -9,7 +9,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
-import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i2;
+import 'dart:typed_data' as _i2;
+import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i3;
 
 abstract class Board implements _i1.SerializableModel {
   Board._({
@@ -17,6 +18,7 @@ abstract class Board implements _i1.SerializableModel {
     required this.title,
     this.uuid,
     required this.content,
+    this.cover,
     required this.modifiedAt,
     required this.ownerId,
     this.owner,
@@ -27,9 +29,10 @@ abstract class Board implements _i1.SerializableModel {
     required String title,
     String? uuid,
     required String content,
+    _i2.ByteData? cover,
     required DateTime modifiedAt,
     required int ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   }) = _BoardImpl;
 
   factory Board.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -38,12 +41,15 @@ abstract class Board implements _i1.SerializableModel {
       title: jsonSerialization['title'] as String,
       uuid: jsonSerialization['uuid'] as String?,
       content: jsonSerialization['content'] as String,
+      cover: jsonSerialization['cover'] == null
+          ? null
+          : _i1.ByteDataJsonExtension.fromJson(jsonSerialization['cover']),
       modifiedAt:
           _i1.DateTimeJsonExtension.fromJson(jsonSerialization['modifiedAt']),
       ownerId: jsonSerialization['ownerId'] as int,
       owner: jsonSerialization['owner'] == null
           ? null
-          : _i2.UserInfo.fromJson(
+          : _i3.UserInfo.fromJson(
               (jsonSerialization['owner'] as Map<String, dynamic>)),
     );
   }
@@ -59,20 +65,23 @@ abstract class Board implements _i1.SerializableModel {
 
   String content;
 
+  _i2.ByteData? cover;
+
   DateTime modifiedAt;
 
   int ownerId;
 
-  _i2.UserInfo? owner;
+  _i3.UserInfo? owner;
 
   Board copyWith({
     int? id,
     String? title,
     String? uuid,
     String? content,
+    _i2.ByteData? cover,
     DateTime? modifiedAt,
     int? ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -81,6 +90,7 @@ abstract class Board implements _i1.SerializableModel {
       'title': title,
       if (uuid != null) 'uuid': uuid,
       'content': content,
+      if (cover != null) 'cover': cover?.toJson(),
       'modifiedAt': modifiedAt.toJson(),
       'ownerId': ownerId,
       if (owner != null) 'owner': owner?.toJson(),
@@ -101,14 +111,16 @@ class _BoardImpl extends Board {
     required String title,
     String? uuid,
     required String content,
+    _i2.ByteData? cover,
     required DateTime modifiedAt,
     required int ownerId,
-    _i2.UserInfo? owner,
+    _i3.UserInfo? owner,
   }) : super._(
           id: id,
           title: title,
           uuid: uuid,
           content: content,
+          cover: cover,
           modifiedAt: modifiedAt,
           ownerId: ownerId,
           owner: owner,
@@ -120,6 +132,7 @@ class _BoardImpl extends Board {
     String? title,
     Object? uuid = _Undefined,
     String? content,
+    Object? cover = _Undefined,
     DateTime? modifiedAt,
     int? ownerId,
     Object? owner = _Undefined,
@@ -129,9 +142,10 @@ class _BoardImpl extends Board {
       title: title ?? this.title,
       uuid: uuid is String? ? uuid : this.uuid,
       content: content ?? this.content,
+      cover: cover is _i2.ByteData? ? cover : this.cover?.clone(),
       modifiedAt: modifiedAt ?? this.modifiedAt,
       ownerId: ownerId ?? this.ownerId,
-      owner: owner is _i2.UserInfo? ? owner : this.owner?.copyWith(),
+      owner: owner is _i3.UserInfo? ? owner : this.owner?.copyWith(),
     );
   }
 }
