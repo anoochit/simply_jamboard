@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:jamboard_client/jamboard_client.dart';
 
@@ -22,18 +21,11 @@ class HomeController extends GetxController {
     final board = await client.board.addBoard(title);
     // update board list
     getBoards();
-
     return board;
   }
 
   Future<void> getBoards() async {
     final boards = await client.board.getBoards();
     listBoards.value = boards;
-  }
-
-  @override
-  void refresh() {
-    getBoards();
-    super.refresh();
   }
 }

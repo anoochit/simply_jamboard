@@ -13,11 +13,11 @@ class WhiteboardView extends GetView<WhiteboardController> {
   const WhiteboardView({super.key});
   @override
   Widget build(BuildContext context) {
-    // load sample drawing data
-    final drawJson = jsonDecode(sampleDraw);
-    log('Draw items = ${drawJson.length}');
-    final simpleLine = SmoothLine.fromJson(drawJson[0]);
-    controller.drawingController.addContent(simpleLine);
+    // // load sample drawing data
+    // final drawJson = jsonDecode(sampleDraw);
+    // log('Draw items = ${drawJson.length}');
+    // final simpleLine = SmoothLine.fromJson(drawJson[0]);
+    // controller.drawingController.addContent(simpleLine);
 
     return Scaffold(
       appBar: appBar(
