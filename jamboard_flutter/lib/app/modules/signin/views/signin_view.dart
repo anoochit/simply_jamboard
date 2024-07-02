@@ -8,7 +8,7 @@ import '../../../../serverpod.dart';
 import '../controllers/signin_controller.dart';
 
 class SigninView extends GetView<SigninController> {
-  const SigninView({Key? key}) : super(key: key);
+  const SigninView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -16,7 +16,7 @@ class WhiteboardView extends GetView<WhiteboardController> {
     return Scaffold(
       appBar: appBar(
         context: context,
-        title: 'Jamboard',
+        title: 'Whiteboard',
         action: AvatarIconView(
           user: sessionManager.signedInUser,
           onTap: () {
@@ -24,10 +24,13 @@ class WhiteboardView extends GetView<WhiteboardController> {
           },
         ),
       ),
-      body: Obx(() {
-        final data = controller.data;
-        return Text('$data');
-      }),
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Obx(() {
+          final data = controller.data;
+          return Text('$data');
+        }),
+      ),
     );
   }
 }

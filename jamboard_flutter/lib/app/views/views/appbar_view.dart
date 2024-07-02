@@ -8,26 +8,30 @@ PreferredSizeWidget appBar(
   final width = MediaQuery.sizeOf(context).width;
   return PreferredSize(
     preferredSize: Size(width, 64),
-    child: Container(
+    child: SizedBox(
       width: width,
       height: 64,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 16,
+          const SizedBox(
+            width: 8.0,
           ),
-          TextButton(
+          TextButton.icon(
             onPressed: () => Get.offAllNamed(Routes.HOME),
-            child: Text(
+            icon: const Icon(Icons.dashboard_outlined),
+            label: Text(
               title,
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium!
+                  .apply(color: Theme.of(context).colorScheme.primary),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           (action != null) ? action : Container(),
-          SizedBox(
-            width: 8,
+          const SizedBox(
+            width: 8.0,
           ),
         ],
       ),

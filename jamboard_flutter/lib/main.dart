@@ -14,18 +14,20 @@ void main() {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Jamboard",
+      title: "Whiteboard",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: ThemeData(
         colorSchemeSeed: Colors.blue,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           foregroundColor: Colors.white,
           surfaceTintColor: Colors.blue,
           backgroundColor: Colors.blue,
         ),
         cardTheme: CardTheme(
-          elevation: 0.5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
         ),
       ),
     ),

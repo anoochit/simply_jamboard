@@ -19,7 +19,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       appBar: appBar(
         context: context,
-        title: 'Jamboard',
+        title: 'Whiteboard',
         action: AvatarIconView(
           user: sessionManager.signedInUser,
           onTap: () {
