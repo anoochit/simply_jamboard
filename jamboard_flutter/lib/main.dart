@@ -18,12 +18,12 @@ void main() {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
+        // colorSchemeSeed: Colors.blue,
         appBarTheme: const AppBarTheme(
-          foregroundColor: Colors.white,
-          surfaceTintColor: Colors.blue,
-          backgroundColor: Colors.blue,
-        ),
+            // foregroundColor: Colors.white,
+            // surfaceTintColor: Colors.blue,
+            // backgroundColor: Colors.blue,
+            ),
         cardTheme: CardTheme(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),

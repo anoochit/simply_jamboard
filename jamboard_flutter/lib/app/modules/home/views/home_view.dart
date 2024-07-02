@@ -9,7 +9,7 @@ import '../../../data/utils/responsive_utils.dart';
 import '../../../views/views/appbar_view.dart';
 import '../../../views/views/avatar_icon_view.dart';
 import '../controllers/home_controller.dart';
-import 'board_thumbnail_view.dart';
+import '../../../views/views/board_thumbnail_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -39,8 +39,9 @@ class HomeView extends GetView<HomeController> {
             padding: const EdgeInsets.all(16.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: ResponsiveUtils.gridItem(context),
-              mainAxisSpacing: 8.0,
-              crossAxisSpacing: 8.0,
+              mainAxisSpacing: 12.0,
+              crossAxisSpacing: 12.0,
+              childAspectRatio: 3 / 2.4,
             ),
             children: List.generate(controller.listBoards.length, (index) {
               final board = controller.listBoards[index];

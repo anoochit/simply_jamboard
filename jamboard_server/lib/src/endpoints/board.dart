@@ -19,7 +19,7 @@ class BoardEndpoint extends Endpoint {
     final uuid = Uuid().v4();
     final row = Board(
       title: title,
-      content: '{}',
+      content: '[]',
       ownerId: userInfo!.userId,
       uuid: uuid,
       modifiedAt: DateTime.now(),
