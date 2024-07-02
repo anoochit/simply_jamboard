@@ -10,6 +10,7 @@ dependencies:
   cupertino_icons: ^1.0.5
   flutter:
     sdk: flutter
+  flutter_drawing_board: ^0.7.0+2
   get: 4.6.6
   jamboard_client:
     path: ../jamboard_client

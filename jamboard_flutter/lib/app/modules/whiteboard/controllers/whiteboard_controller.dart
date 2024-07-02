@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:get/get.dart';
 import 'package:jamboard_client/jamboard_client.dart';
 import 'package:jamboard_flutter/serverpod.dart';
@@ -8,13 +9,21 @@ class WhiteboardController extends GetxController {
   RxString data = ''.obs;
   Board? board;
 
+  late StreamingConnectionHandler? connectionHandler;
+  DrawingController drawingController = DrawingController();
+
   @override
   void onInit() {
     super.onInit();
     // load board data
     loadBoard();
+    // stream connect
+    streamConnect();
+    // stream listen
+    streamListen();
   }
 
+  // load board data
   Future<void> loadBoard() async {
     final uuid = Get.parameters['id'];
     if (uuid != null) {
@@ -25,18 +34,6 @@ class WhiteboardController extends GetxController {
       board = null;
       data.value = '{}';
     }
-  }
-
-  /*
-  late StreamingConnectionHandler? connectionHandler;
-
-  RxString data = ''.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    streamConnect();
-    streamListen();
   }
 
   // connect stream
@@ -65,14 +62,8 @@ class WhiteboardController extends GetxController {
   }
 
   @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
   void onClose() {
     super.onClose();
     streamClose();
   }
-  */
 }

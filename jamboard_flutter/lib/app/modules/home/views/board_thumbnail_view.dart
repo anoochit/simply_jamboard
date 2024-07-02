@@ -12,7 +12,13 @@ class BoardThumbnailView extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border:
+            Border.all(color: Theme.of(context).colorScheme.primaryContainer),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: () => onTap(),

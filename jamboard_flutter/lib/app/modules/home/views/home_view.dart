@@ -36,19 +36,21 @@ class HomeView extends GetView<HomeController> {
             });
           },
           child: GridView(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: ResponsiveUtils.gridItem(context),
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 8.0,
+              crossAxisSpacing: 8.0,
             ),
             children: List.generate(controller.listBoards.length, (index) {
               final board = controller.listBoards[index];
               return BoardThumbnailView(
                 board: board,
                 onTap: () {
-                  Get.toNamed(Routes.WHITEBOARD,
-                      parameters: {"id": board.uuid!});
+                  Get.toNamed(
+                    Routes.WHITEBOARD,
+                    parameters: {"id": board.uuid!},
+                  );
                 },
               );
             }),

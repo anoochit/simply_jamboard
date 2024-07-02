@@ -40,8 +40,6 @@ class BoardEndpoint extends Endpoint {
   // stream opened
   @override
   Future<void> streamOpened(StreamingSession session) async {
-    // final authenticationInfo = await session.authenticated;
-    // final userId = authenticationInfo?.userId;
     session.log('Stream opened');
     session.messages.addListener(
       'channel',
@@ -63,7 +61,7 @@ class BoardEndpoint extends Endpoint {
     );
   }
 
-  // stream listen
+  // stream handle message
   @override
   Future<void> handleStreamMessage(
       StreamingSession session, SerializableModel message) async {
