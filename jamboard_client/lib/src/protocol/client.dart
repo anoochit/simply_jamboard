@@ -43,6 +43,19 @@ class EndpointBoard extends _i1.EndpointRef {
         'getBoard',
         {'uuid': uuid},
       );
+
+  _i2.Future<void> saveBoard(
+    int id,
+    String content,
+  ) =>
+      caller.callServerEndpoint<void>(
+        'board',
+        'saveBoard',
+        {
+          'id': id,
+          'content': content,
+        },
+      );
 }
 
 /// {@category Endpoint}

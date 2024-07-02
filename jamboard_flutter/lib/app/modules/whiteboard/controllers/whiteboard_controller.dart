@@ -41,7 +41,7 @@ class WhiteboardController extends GetxController {
     }
   }
 
-  // draw content
+  // draw content from json string
   drawContent() {
     // get paint content
     final jsonContent = jsonDecode(data.value);
@@ -55,33 +55,41 @@ class WhiteboardController extends GetxController {
       }
 
       if (paint['type'] == "SimpleLine") {
-        log('add simple line');
+        log('Add paint simple line');
         listPaints.add(SimpleLine.fromJson(paint));
       }
 
       if (paint['type'] == "StraightLine") {
-        log('add straight line');
+        log('Add paint straight line');
         listPaints.add(StraightLine.fromJson(paint));
       }
 
       if (paint['type'] == "Rectangle") {
-        log('add rectangle');
+        log('Add paint rectangle');
         listPaints.add(Rectangle.fromJson(paint));
       }
 
       if (paint['type'] == "Circle") {
-        log('add circle');
+        log('Add paint circle');
         listPaints.add(Circle.fromJson(paint));
       }
 
       if (paint['type'] == "Eraser") {
-        log('add eraser');
+        log('Add paint eraser');
         listPaints.add(Eraser.fromJson(paint));
       }
     }
 
     // draw
     drawingController.addContents(listPaints);
+  }
+
+  // save draw content
+  saveDraw({required String content}) async {
+    if (board != null) {
+      log('save board');
+      await client.board.saveBoard(board!.id!, content);
+    }
   }
 
   // connect stream
@@ -111,7 +119,12 @@ class WhiteboardController extends GetxController {
 
   @override
   void onClose() {
-    super.onClose();
+    log('on close');
+    // save draw
+    saveDraw(content: data.value);
+
+    // stream close
     streamClose();
+    super.onClose();
   }
 }

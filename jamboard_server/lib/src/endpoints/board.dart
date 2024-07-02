@@ -32,9 +32,21 @@ class BoardEndpoint extends Endpoint {
     final board = await Board.db.findFirstRow(
       session,
       where: (p) => p.uuid.equals(uuid),
+      orderBy: (p) => p.modifiedAt,
+      orderDescending: true,
     );
 
     return board;
+  }
+
+  // save board
+  Future<void> saveBoard(Session session, int id, String content) async {
+    final board = await Board.db.findById(session, id);
+    if (board != null) {
+      board.content = content;
+      board.modifiedAt = DateTime.now();
+      await Board.db.updateRow(session, board);
+    }
   }
 
   // stream opened
@@ -71,6 +83,5 @@ class BoardEndpoint extends Endpoint {
       'channel',
       message,
     );
-    // }
   }
 }

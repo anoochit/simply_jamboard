@@ -2,6 +2,7 @@ board:
   - getBoards:
   - addBoard:
   - getBoard:
+  - saveBoard:
 example:
   - hello:
 userStream:
