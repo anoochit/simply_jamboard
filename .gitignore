@@ -1,1 +1,3 @@
 whiteboardkit/
+jamboard_flutter/lib/sample_paint.json
+jamboard_flutter/lib/app/modules/whiteboard/controllers/whiteboard_controller.dart

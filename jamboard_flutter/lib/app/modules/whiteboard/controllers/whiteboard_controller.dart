@@ -65,6 +65,11 @@ class WhiteboardController extends GetxController {
         listPaints.add(StraightLine.fromJson(paint));
       }
 
+      if (paint['type'] == "Triangle") {
+        log('Add paint triangle');
+        listPaints.add(Triangle.fromJson(paint));
+      }
+
       if (paint['type'] == "Rectangle") {
         log('Add paint rectangle');
         listPaints.add(Rectangle.fromJson(paint));
@@ -124,7 +129,6 @@ class WhiteboardController extends GetxController {
   @override
   void onClose() {
     log('on close');
-    // save draw
 
     // stream close
     streamClose();
