@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:flutter_drawing_board/paint_contents.dart';
@@ -15,15 +14,45 @@ class WhiteboardController extends GetxController {
   late StreamingConnectionHandler? connectionHandler;
   DrawingController drawingController = DrawingController();
 
+  RxList<UserStream> listUserStream = <UserStream>[].obs;
+
+  late int boardId;
+  late int userId;
+
+  late Stream<SerializableModel> boardStream;
+
   @override
   void onInit() {
     super.onInit();
-    // load board data
     loadBoard();
-    // stream connect
-    streamConnect();
-    // stream listen
-    streamListen();
+    openStream();
+  }
+
+  openStream() async {
+    client.openStreamingConnection();
+
+    drawingController.realPainter!.addListener(() {
+      //
+      log('paint');
+    });
+
+    try {
+      await for (var message in client.board.stream) {
+        //
+        if (message is Board) {
+          log('load board stream message');
+          loadBoard();
+        }
+        //
+        getUserStreamList();
+      }
+    } catch (e) {}
+  }
+
+  @override
+  void onClose() {
+    removeUserStreamToBoard();
+    super.onClose();
   }
 
   // load board data
@@ -32,13 +61,48 @@ class WhiteboardController extends GetxController {
     if (uuid != null) {
       log('load board = $uuid');
       board = await client.board.getBoard(uuid);
+      boardId = board!.id!;
+      log('board id = ${boardId}');
+      userId = sessionManager.signedInUser!.id!;
+      log('user id = ${userId}');
       data.value = board!.content;
-      log(data.value);
+      //
+      addUserStreamToBoard();
       // draw
       drawContent();
     } else {
       board = null;
       data.value = '[]';
+    }
+  }
+
+  saveBoard() {
+    if (board != null) {
+      // get json content from current board
+      final json = drawingController.getJsonList();
+      final content = jsonEncode(json);
+
+      try {
+        // get cover
+        drawingController.getImageData().then((cover) async {
+          // save board
+          await client.board.saveBoard(board!.id!, content, cover!);
+          log('Save board = ${board!.uuid}');
+
+          client.board.sendStreamMessage(
+            Board(
+              id: board!.id,
+              title: '',
+              content: '',
+              modifiedAt: DateTime.now(),
+              ownerId: sessionManager.signedInUser!.id!,
+            ),
+          );
+        });
+      } catch (e) {
+        //
+        log('$e');
+      }
     }
   }
 
@@ -87,51 +151,29 @@ class WhiteboardController extends GetxController {
     }
 
     // draw
+    log('redraw!');
     drawingController.addContents(listPaints);
   }
 
-  // save draw content
-  saveBoard({required String content, ByteData? cover}) async {
-    if (board != null) {
-      final json = drawingController.getJsonList();
-      final content = jsonEncode(json);
-      log('save board');
-      // get cover
-      client.board.saveBoard(board!.id!, content, cover!);
-    }
+  // get user stream list
+  getUserStreamList() async {
+    log('find user in board id = $boardId');
+
+    List<UserStream> userStream =
+        await client.userStream.getListUserStreamFromBoard(boardId);
+    log('Found ${userStream.length} users in board id = $boardId');
+    listUserStream.value = userStream;
   }
 
-  // connect stream
-  streamConnect() {
-    connectionHandler = StreamingConnectionHandler(
-      client: client,
-      listener: (state) {
-        log('[${DateTime.now()}] - Connection state : ${state.status}');
-      },
-    );
-    connectionHandler!.connect();
+  addUserStreamToBoard() async {
+    log('add user stream');
+    await client.userStream.addUserStreamToBoard(boardId, userId);
+    await getUserStreamList();
   }
 
-  // listen stream
-  streamListen() async {
-    await for (var message in client.board.stream) {
-      log(message.toString());
-      data.value = message.toString();
-    }
-  }
-
-  // stream close
-  streamClose() {
-    client.board.resetStream();
-    connectionHandler!.close();
-  }
-
-  @override
-  void onClose() {
-    log('on close');
-
-    // stream close
-    streamClose();
-    super.onClose();
+  removeUserStreamToBoard() async {
+    log('remove user stream');
+    await client.userStream.removeUserStreamFromBoard(boardId, userId);
+    await getUserStreamList();
   }
 }

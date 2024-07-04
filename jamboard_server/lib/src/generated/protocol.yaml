@@ -6,4 +6,6 @@ board:
 example:
   - hello:
 userStream:
-  - getUserStream:
+  - addUserStreamToBoard:
+  - removeUserStreamFromBoard:
+  - getListUserStreamFromBoard:

@@ -82,10 +82,36 @@ class EndpointUserStream extends _i1.EndpointRef {
   @override
   String get name => 'userStream';
 
-  _i2.Future<List<_i5.UserStream>> getUserStream(int boardId) =>
+  _i2.Future<void> addUserStreamToBoard(
+    int boardId,
+    int userId,
+  ) =>
+      caller.callServerEndpoint<void>(
+        'userStream',
+        'addUserStreamToBoard',
+        {
+          'boardId': boardId,
+          'userId': userId,
+        },
+      );
+
+  _i2.Future<List<_i5.UserStream>> removeUserStreamFromBoard(
+    int boardId,
+    int userId,
+  ) =>
       caller.callServerEndpoint<List<_i5.UserStream>>(
         'userStream',
-        'getUserStream',
+        'removeUserStreamFromBoard',
+        {
+          'boardId': boardId,
+          'userId': userId,
+        },
+      );
+
+  _i2.Future<List<_i5.UserStream>> getListUserStreamFromBoard(int boardId) =>
+      caller.callServerEndpoint<List<_i5.UserStream>>(
+        'userStream',
+        'getListUserStreamFromBoard',
         {'boardId': boardId},
       );
 }

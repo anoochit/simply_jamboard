@@ -1,0 +1,118 @@
+{
+  "actions": [
+    {
+      "type": "deleteTable",
+      "deleteTable": "user_stream"
+    },
+    {
+      "type": "createTable",
+      "createTable": {
+        "name": "user_stream",
+        "dartName": "UserStream",
+        "module": "jamboard",
+        "schema": "public",
+        "columns": [
+          {
+            "name": "id",
+            "columnType": 6,
+            "isNullable": false,
+            "columnDefault": "nextval('user_stream_id_seq'::regclass)",
+            "dartType": "int?"
+          },
+          {
+            "name": "boardId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          },
+          {
+            "name": "userInfoId",
+            "columnType": 6,
+            "isNullable": false,
+            "dartType": "int"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "constraintName": "user_stream_fk_0",
+            "columns": [
+              "boardId"
+            ],
+            "referenceTable": "board",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          },
+          {
+            "constraintName": "user_stream_fk_1",
+            "columns": [
+              "userInfoId"
+            ],
+            "referenceTable": "serverpod_user_info",
+            "referenceTableSchema": "public",
+            "referenceColumns": [
+              "id"
+            ],
+            "onUpdate": 3,
+            "onDelete": 3
+          }
+        ],
+        "indexes": [
+          {
+            "indexName": "user_stream_pkey",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "id"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": true
+          },
+          {
+            "indexName": "user_stream_unique_idx",
+            "elements": [
+              {
+                "type": 0,
+                "definition": "boardId"
+              },
+              {
+                "type": 0,
+                "definition": "userInfoId"
+              }
+            ],
+            "type": "btree",
+            "isUnique": true,
+            "isPrimary": false
+          }
+        ],
+        "managed": true
+      }
+    }
+  ],
+  "warnings": [
+    {
+      "type": "columnDropped",
+      "message": "Column \"userId\" of table \"user_stream\" will be dropped.",
+      "table": "user_stream",
+      "columns": [
+        "userId"
+      ],
+      "destrucive": true
+    },
+    {
+      "type": "tableDropped",
+      "message": "One or more columns are added to table \"user_stream\" which cannot be added in a table migration. The complete table will be deleted and recreated.",
+      "table": "user_stream",
+      "columns": [
+        "userInfoId"
+      ],
+      "destrucive": true
+    }
+  ],
+  "migrationApiVersion": 1
+}

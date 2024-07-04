@@ -15,7 +15,7 @@ class BoardThumbnailView extends GetView {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         border:
             Border.all(color: Theme.of(context).colorScheme.primaryContainer),
         borderRadius: BorderRadius.circular(8.0),

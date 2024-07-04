@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:jamboard_server/src/generated/protocol.dart';
 import 'package:serverpod/serverpod.dart';
+import 'package:serverpod_auth_server/module.dart';
 
 class BoardEndpoint extends Endpoint {
   // get whiteboard
@@ -12,6 +13,9 @@ class BoardEndpoint extends Endpoint {
       where: (p) => p.owner.id.equals(userInfo!.userId),
       orderBy: (p) => p.modifiedAt,
       orderDescending: true,
+      include: Board.include(
+        owner: UserInfo.include(),
+      ),
     );
   }
 
@@ -69,12 +73,6 @@ class BoardEndpoint extends Endpoint {
   @override
   Future<void> streamClosed(StreamingSession session) async {
     session.log('Stream closed');
-    session.messages.removeListener(
-      'channel',
-      (message) async {
-        sendStreamMessage(session, message);
-      },
-    );
   }
 
   // stream handle message

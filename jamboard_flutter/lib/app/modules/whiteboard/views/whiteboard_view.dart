@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:get/get.dart';
+import 'package:jamboard_flutter/app/views/views/user_stream_icon_view.dart';
 import '../../../views/views/appbar_view.dart';
 import '../controllers/whiteboard_controller.dart';
 
@@ -13,13 +13,13 @@ class WhiteboardView extends GetView<WhiteboardController> {
       appBar: appBar(
         context: context,
         title: 'Whiteboard',
-        action: Container(),
+        action: UserStreamIconView(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surfaceContainer,
             border: Border.all(
                 color: Theme.of(context).colorScheme.primaryContainer),
             borderRadius: BorderRadius.circular(8.0),
@@ -34,28 +34,16 @@ class WhiteboardView extends GetView<WhiteboardController> {
           child: DrawingBoard(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             controller: controller.drawingController,
-            showDefaultActions: true,
-            showDefaultTools: true,
+            // showDefaultActions: true,
+            // showDefaultTools: true,
             boardPanEnabled: false,
             boardScaleEnabled: false,
             background: SizedBox(
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height,
             ),
-            onPointerUp: (pue) async {
-              // get content
-              final json = controller.drawingController.getJsonList();
-              // update content
-              controller.data.value = jsonEncode(json);
-              // log(controller.data.value);
-              // get cover
-              controller.drawingController.getImageData().then((cover) {
-                // save board
-                controller.saveBoard(
-                  content: controller.data.value,
-                  cover: cover,
-                );
-              });
+            onPointerUp: (p) {
+              controller.saveBoard();
             },
           ),
         ),

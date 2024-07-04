@@ -17,16 +17,16 @@ abstract class UserStream implements _i1.SerializableModel {
     this.id,
     required this.boardId,
     this.board,
-    required this.userId,
-    this.user,
+    required this.userInfoId,
+    this.userInfo,
   });
 
   factory UserStream({
     int? id,
     required int boardId,
     _i2.Board? board,
-    required int userId,
-    _i3.UserInfo? user,
+    required int userInfoId,
+    _i3.UserInfo? userInfo,
   }) = _UserStreamImpl;
 
   factory UserStream.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -37,11 +37,11 @@ abstract class UserStream implements _i1.SerializableModel {
           ? null
           : _i2.Board.fromJson(
               (jsonSerialization['board'] as Map<String, dynamic>)),
-      userId: jsonSerialization['userId'] as int,
-      user: jsonSerialization['user'] == null
+      userInfoId: jsonSerialization['userInfoId'] as int,
+      userInfo: jsonSerialization['userInfo'] == null
           ? null
           : _i3.UserInfo.fromJson(
-              (jsonSerialization['user'] as Map<String, dynamic>)),
+              (jsonSerialization['userInfo'] as Map<String, dynamic>)),
     );
   }
 
@@ -54,16 +54,16 @@ abstract class UserStream implements _i1.SerializableModel {
 
   _i2.Board? board;
 
-  int userId;
+  int userInfoId;
 
-  _i3.UserInfo? user;
+  _i3.UserInfo? userInfo;
 
   UserStream copyWith({
     int? id,
     int? boardId,
     _i2.Board? board,
-    int? userId,
-    _i3.UserInfo? user,
+    int? userInfoId,
+    _i3.UserInfo? userInfo,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -71,8 +71,8 @@ abstract class UserStream implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'boardId': boardId,
       if (board != null) 'board': board?.toJson(),
-      'userId': userId,
-      if (user != null) 'user': user?.toJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.toJson(),
     };
   }
 
@@ -89,14 +89,14 @@ class _UserStreamImpl extends UserStream {
     int? id,
     required int boardId,
     _i2.Board? board,
-    required int userId,
-    _i3.UserInfo? user,
+    required int userInfoId,
+    _i3.UserInfo? userInfo,
   }) : super._(
           id: id,
           boardId: boardId,
           board: board,
-          userId: userId,
-          user: user,
+          userInfoId: userInfoId,
+          userInfo: userInfo,
         );
 
   @override
@@ -104,15 +104,16 @@ class _UserStreamImpl extends UserStream {
     Object? id = _Undefined,
     int? boardId,
     Object? board = _Undefined,
-    int? userId,
-    Object? user = _Undefined,
+    int? userInfoId,
+    Object? userInfo = _Undefined,
   }) {
     return UserStream(
       id: id is int? ? id : this.id,
       boardId: boardId ?? this.boardId,
       board: board is _i2.Board? ? board : this.board?.copyWith(),
-      userId: userId ?? this.userId,
-      user: user is _i3.UserInfo? ? user : this.user?.copyWith(),
+      userInfoId: userInfoId ?? this.userInfoId,
+      userInfo:
+          userInfo is _i3.UserInfo? ? userInfo : this.userInfo?.copyWith(),
     );
   }
 }

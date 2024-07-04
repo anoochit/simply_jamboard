@@ -11,9 +11,7 @@ class AvatarIconView extends GetView {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        // TODO : goto profile page
-      },
+      onPressed: onTap,
       icon: CircleAvatar(
         child: Text(user!.email!.substring(0, 1).toUpperCase()),
       ),

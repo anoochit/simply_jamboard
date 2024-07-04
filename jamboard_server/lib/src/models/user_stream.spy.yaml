@@ -2,4 +2,9 @@ class: UserStream
 table: user_stream
 fields:
   board: Board?, relation
-  user: module:auth:UserInfo?, relation
+  userInfo: module:auth:UserInfo?, relation
+
+indexes:
+  user_stream_unique_idx:
+    fields: boardId, userInfoId
+    unique: true

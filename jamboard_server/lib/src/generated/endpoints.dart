@@ -148,8 +148,58 @@ class Endpoints extends _i1.EndpointDispatch {
       name: 'userStream',
       endpoint: endpoints['userStream']!,
       methodConnectors: {
-        'getUserStream': _i1.MethodConnector(
-          name: 'getUserStream',
+        'addUserStreamToBoard': _i1.MethodConnector(
+          name: 'addUserStreamToBoard',
+          params: {
+            'boardId': _i1.ParameterDescription(
+              name: 'boardId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['userStream'] as _i4.UserStreamEndpoint)
+                  .addUserStreamToBoard(
+            session,
+            params['boardId'],
+            params['userId'],
+          ),
+        ),
+        'removeUserStreamFromBoard': _i1.MethodConnector(
+          name: 'removeUserStreamFromBoard',
+          params: {
+            'boardId': _i1.ParameterDescription(
+              name: 'boardId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'userId': _i1.ParameterDescription(
+              name: 'userId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['userStream'] as _i4.UserStreamEndpoint)
+                  .removeUserStreamFromBoard(
+            session,
+            params['boardId'],
+            params['userId'],
+          ),
+        ),
+        'getListUserStreamFromBoard': _i1.MethodConnector(
+          name: 'getListUserStreamFromBoard',
           params: {
             'boardId': _i1.ParameterDescription(
               name: 'boardId',
@@ -161,11 +211,12 @@ class Endpoints extends _i1.EndpointDispatch {
             _i1.Session session,
             Map<String, dynamic> params,
           ) async =>
-              (endpoints['userStream'] as _i4.UserStreamEndpoint).getUserStream(
+              (endpoints['userStream'] as _i4.UserStreamEndpoint)
+                  .getListUserStreamFromBoard(
             session,
             params['boardId'],
           ),
-        )
+        ),
       },
     );
     modules['serverpod_auth'] = _i6.Endpoints()..initializeEndpoints(server);

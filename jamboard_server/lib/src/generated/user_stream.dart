@@ -18,16 +18,16 @@ abstract class UserStream extends _i1.TableRow
     int? id,
     required this.boardId,
     this.board,
-    required this.userId,
-    this.user,
+    required this.userInfoId,
+    this.userInfo,
   }) : super(id);
 
   factory UserStream({
     int? id,
     required int boardId,
     _i2.Board? board,
-    required int userId,
-    _i3.UserInfo? user,
+    required int userInfoId,
+    _i3.UserInfo? userInfo,
   }) = _UserStreamImpl;
 
   factory UserStream.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -38,11 +38,11 @@ abstract class UserStream extends _i1.TableRow
           ? null
           : _i2.Board.fromJson(
               (jsonSerialization['board'] as Map<String, dynamic>)),
-      userId: jsonSerialization['userId'] as int,
-      user: jsonSerialization['user'] == null
+      userInfoId: jsonSerialization['userInfoId'] as int,
+      userInfo: jsonSerialization['userInfo'] == null
           ? null
           : _i3.UserInfo.fromJson(
-              (jsonSerialization['user'] as Map<String, dynamic>)),
+              (jsonSerialization['userInfo'] as Map<String, dynamic>)),
     );
   }
 
@@ -54,9 +54,9 @@ abstract class UserStream extends _i1.TableRow
 
   _i2.Board? board;
 
-  int userId;
+  int userInfoId;
 
-  _i3.UserInfo? user;
+  _i3.UserInfo? userInfo;
 
   @override
   _i1.Table get table => t;
@@ -65,8 +65,8 @@ abstract class UserStream extends _i1.TableRow
     int? id,
     int? boardId,
     _i2.Board? board,
-    int? userId,
-    _i3.UserInfo? user,
+    int? userInfoId,
+    _i3.UserInfo? userInfo,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -74,8 +74,8 @@ abstract class UserStream extends _i1.TableRow
       if (id != null) 'id': id,
       'boardId': boardId,
       if (board != null) 'board': board?.toJson(),
-      'userId': userId,
-      if (user != null) 'user': user?.toJson(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.toJson(),
     };
   }
 
@@ -85,18 +85,18 @@ abstract class UserStream extends _i1.TableRow
       if (id != null) 'id': id,
       'boardId': boardId,
       if (board != null) 'board': board?.toJsonForProtocol(),
-      'userId': userId,
-      if (user != null) 'user': user?.toJsonForProtocol(),
+      'userInfoId': userInfoId,
+      if (userInfo != null) 'userInfo': userInfo?.toJsonForProtocol(),
     };
   }
 
   static UserStreamInclude include({
     _i2.BoardInclude? board,
-    _i3.UserInfoInclude? user,
+    _i3.UserInfoInclude? userInfo,
   }) {
     return UserStreamInclude._(
       board: board,
-      user: user,
+      userInfo: userInfo,
     );
   }
 
@@ -133,14 +133,14 @@ class _UserStreamImpl extends UserStream {
     int? id,
     required int boardId,
     _i2.Board? board,
-    required int userId,
-    _i3.UserInfo? user,
+    required int userInfoId,
+    _i3.UserInfo? userInfo,
   }) : super._(
           id: id,
           boardId: boardId,
           board: board,
-          userId: userId,
-          user: user,
+          userInfoId: userInfoId,
+          userInfo: userInfo,
         );
 
   @override
@@ -148,15 +148,16 @@ class _UserStreamImpl extends UserStream {
     Object? id = _Undefined,
     int? boardId,
     Object? board = _Undefined,
-    int? userId,
-    Object? user = _Undefined,
+    int? userInfoId,
+    Object? userInfo = _Undefined,
   }) {
     return UserStream(
       id: id is int? ? id : this.id,
       boardId: boardId ?? this.boardId,
       board: board is _i2.Board? ? board : this.board?.copyWith(),
-      userId: userId ?? this.userId,
-      user: user is _i3.UserInfo? ? user : this.user?.copyWith(),
+      userInfoId: userInfoId ?? this.userInfoId,
+      userInfo:
+          userInfo is _i3.UserInfo? ? userInfo : this.userInfo?.copyWith(),
     );
   }
 }
@@ -167,8 +168,8 @@ class UserStreamTable extends _i1.Table {
       'boardId',
       this,
     );
-    userId = _i1.ColumnInt(
-      'userId',
+    userInfoId = _i1.ColumnInt(
+      'userInfoId',
       this,
     );
   }
@@ -177,9 +178,9 @@ class UserStreamTable extends _i1.Table {
 
   _i2.BoardTable? _board;
 
-  late final _i1.ColumnInt userId;
+  late final _i1.ColumnInt userInfoId;
 
-  _i3.UserInfoTable? _user;
+  _i3.UserInfoTable? _userInfo;
 
   _i2.BoardTable get board {
     if (_board != null) return _board!;
@@ -194,24 +195,24 @@ class UserStreamTable extends _i1.Table {
     return _board!;
   }
 
-  _i3.UserInfoTable get user {
-    if (_user != null) return _user!;
-    _user = _i1.createRelationTable(
-      relationFieldName: 'user',
-      field: UserStream.t.userId,
+  _i3.UserInfoTable get userInfo {
+    if (_userInfo != null) return _userInfo!;
+    _userInfo = _i1.createRelationTable(
+      relationFieldName: 'userInfo',
+      field: UserStream.t.userInfoId,
       foreignField: _i3.UserInfo.t.id,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i3.UserInfoTable(tableRelation: foreignTableRelation),
     );
-    return _user!;
+    return _userInfo!;
   }
 
   @override
   List<_i1.Column> get columns => [
         id,
         boardId,
-        userId,
+        userInfoId,
       ];
 
   @override
@@ -219,8 +220,8 @@ class UserStreamTable extends _i1.Table {
     if (relationField == 'board') {
       return board;
     }
-    if (relationField == 'user') {
-      return user;
+    if (relationField == 'userInfo') {
+      return userInfo;
     }
     return null;
   }
@@ -229,20 +230,20 @@ class UserStreamTable extends _i1.Table {
 class UserStreamInclude extends _i1.IncludeObject {
   UserStreamInclude._({
     _i2.BoardInclude? board,
-    _i3.UserInfoInclude? user,
+    _i3.UserInfoInclude? userInfo,
   }) {
     _board = board;
-    _user = user;
+    _userInfo = userInfo;
   }
 
   _i2.BoardInclude? _board;
 
-  _i3.UserInfoInclude? _user;
+  _i3.UserInfoInclude? _userInfo;
 
   @override
   Map<String, _i1.Include?> get includes => {
         'board': _board,
-        'user': _user,
+        'userInfo': _userInfo,
       };
 
   @override
@@ -448,22 +449,22 @@ class UserStreamAttachRowRepository {
     );
   }
 
-  Future<void> user(
+  Future<void> userInfo(
     _i1.Session session,
     UserStream userStream,
-    _i3.UserInfo user,
+    _i3.UserInfo userInfo,
   ) async {
     if (userStream.id == null) {
       throw ArgumentError.notNull('userStream.id');
     }
-    if (user.id == null) {
-      throw ArgumentError.notNull('user.id');
+    if (userInfo.id == null) {
+      throw ArgumentError.notNull('userInfo.id');
     }
 
-    var $userStream = userStream.copyWith(userId: user.id);
+    var $userStream = userStream.copyWith(userInfoId: userInfo.id);
     await session.db.updateRow<UserStream>(
       $userStream,
-      columns: [UserStream.t.userId],
+      columns: [UserStream.t.userInfoId],
     );
   }
 }
