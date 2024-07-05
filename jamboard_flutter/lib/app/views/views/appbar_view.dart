@@ -30,9 +30,7 @@ PreferredSizeWidget appBar(
           ),
           const Spacer(),
           (action != null) ? action : Container(),
-          const SizedBox(
-            width: 8.0
-          ),
+          const SizedBox(width: 8.0),
         ],
       ),
     ),

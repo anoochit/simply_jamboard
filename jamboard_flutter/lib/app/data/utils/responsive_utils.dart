@@ -12,7 +12,7 @@ abstract class ResponsiveUtils {
     } else if (size < 1440) {
       return 4;
     } else {
-      return 6;
+      return 5;
     }
   }
 }

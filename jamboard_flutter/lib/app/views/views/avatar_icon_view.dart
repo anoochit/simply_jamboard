@@ -10,11 +10,8 @@ class AvatarIconView extends GetView {
   final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: onTap,
-      icon: CircleAvatar(
-        child: Text(user!.email!.substring(0, 1).toUpperCase()),
-      ),
+    return CircleAvatar(
+      child: Text(user!.email!.substring(0, 1).toUpperCase()),
     );
   }
 }

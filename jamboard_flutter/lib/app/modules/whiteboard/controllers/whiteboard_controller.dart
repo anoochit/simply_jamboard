@@ -31,22 +31,22 @@ class WhiteboardController extends GetxController {
   openStream() async {
     client.openStreamingConnection();
 
-    drawingController.realPainter!.addListener(() {
-      //
-      log('paint');
-    });
-
     try {
       await for (var message in client.board.stream) {
         //
         if (message is Board) {
           log('load board stream message');
-          loadBoard();
+          if ((userId != message.ownerId) && (boardId == message.id)) {
+            // load board
+            loadBoard();
+          }
+          //
+          getUserStreamList();
         }
-        //
-        getUserStreamList();
       }
-    } catch (e) {}
+    } catch (e) {
+      log('$e');
+    }
   }
 
   @override
@@ -62,9 +62,9 @@ class WhiteboardController extends GetxController {
       log('load board = $uuid');
       board = await client.board.getBoard(uuid);
       boardId = board!.id!;
-      log('board id = ${boardId}');
+      log('board id = $boardId');
       userId = sessionManager.signedInUser!.id!;
-      log('user id = ${userId}');
+      log('user id = $userId');
       data.value = board!.content;
       //
       addUserStreamToBoard();
@@ -76,6 +76,7 @@ class WhiteboardController extends GetxController {
     }
   }
 
+  // save board
   saveBoard() {
     if (board != null) {
       // get json content from current board
@@ -89,11 +90,13 @@ class WhiteboardController extends GetxController {
           await client.board.saveBoard(board!.id!, content, cover!);
           log('Save board = ${board!.uuid}');
 
+          // send message stream
           client.board.sendStreamMessage(
             Board(
               id: board!.id,
-              title: '',
-              content: '',
+              uuid: board!.uuid,
+              title: board!.title,
+              content: content,
               modifiedAt: DateTime.now(),
               ownerId: sessionManager.signedInUser!.id!,
             ),

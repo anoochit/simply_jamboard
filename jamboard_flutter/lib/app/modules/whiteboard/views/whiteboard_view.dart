@@ -13,7 +13,7 @@ class WhiteboardView extends GetView<WhiteboardController> {
       appBar: appBar(
         context: context,
         title: 'Whiteboard',
-        action: UserStreamIconView(),
+        action: const UserStreamIconView(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
