@@ -1,14 +1,16 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:get/get.dart';
-import 'package:jamboard_flutter/app/middleware/routeguard.dart';
 
+import '../middleware/routeguard.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/signin/bindings/signin_binding.dart';
 import '../modules/signin/views/signin_view.dart';
 import '../modules/whiteboard/bindings/whiteboard_binding.dart';
 import '../modules/whiteboard/views/whiteboard_view.dart';
+import '../modules/whiteboard2/bindings/whiteboard2_binding.dart';
+import '../modules/whiteboard2/views/whiteboard2_view.dart';
+
+// ignore_for_file: constant_identifier_names
 
 part 'app_routes.dart';
 
@@ -41,6 +43,11 @@ class AppPages {
       page: () => const SigninView(),
       binding: SigninBinding(),
       transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.WHITEBOARD2,
+      page: () => const Whiteboard2View(),
+      binding: Whiteboard2Binding(),
     ),
   ];
 }

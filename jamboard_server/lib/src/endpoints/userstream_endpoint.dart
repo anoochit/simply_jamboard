@@ -36,8 +36,6 @@ class UserStreamEndpoint extends Endpoint {
       ),
     );
 
-    session.log('${rows.length} users in board id $boardId');
-
     return rows;
   }
 }

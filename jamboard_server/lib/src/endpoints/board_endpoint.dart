@@ -25,7 +25,8 @@ class BoardEndpoint extends Endpoint {
     final uuid = Uuid().v4();
     final row = Board(
       title: title,
-      content: '[]',
+      content:
+          '{"lines":[{"points":[{"x":0,"y":0},{"x":1,"y":1}],"color":"4280391411","width":0,"duration":1298,"wipe":true}],"width":300,"height":600}',
       ownerId: userInfo!.userId,
       uuid: uuid,
       modifiedAt: DateTime.now(),
@@ -80,7 +81,6 @@ class BoardEndpoint extends Endpoint {
   Future<void> handleStreamMessage(
       StreamingSession session, SerializableModel message) async {
     session.log('Handle message');
-    session.log('$message');
     session.messages.postMessage(
       'channel',
       message,

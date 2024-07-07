@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
 import 'package:get/get.dart';
-import 'package:jamboard_flutter/app/views/views/user_stream_icon_view.dart';
-import '../../../views/views/appbar_view.dart';
+import 'package:jamboard_flutter/app/routes/app_pages.dart';
 import '../controllers/whiteboard_controller.dart';
 
 class WhiteboardView extends GetView<WhiteboardController> {
@@ -10,10 +9,11 @@ class WhiteboardView extends GetView<WhiteboardController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(
-        context: context,
-        title: 'Whiteboard',
-        action: const UserStreamIconView(),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Get.offAllNamed(Routes.HOME),
+          icon: Icon(Icons.dashboard_outlined),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

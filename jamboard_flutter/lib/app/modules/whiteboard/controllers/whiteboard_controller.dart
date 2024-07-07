@@ -21,6 +21,8 @@ class WhiteboardController extends GetxController {
 
   late Stream<SerializableModel> boardStream;
 
+  late StreamingConnectionHandler streamingConnectionHandler;
+
   @override
   void onInit() {
     super.onInit();
@@ -29,29 +31,39 @@ class WhiteboardController extends GetxController {
   }
 
   openStream() async {
-    client.openStreamingConnection();
+    streamingConnectionHandler = StreamingConnectionHandler(
+      client: client,
+      listener: (StreamingConnectionHandlerState state) {
+        print('socket state = ${state.status}');
+      },
+    );
+
+    streamingConnectionHandler.connect();
 
     try {
       await for (var message in client.board.stream) {
         //
         if (message is Board) {
-          log('load board stream message');
-          if ((userId != message.ownerId) && (boardId == message.id)) {
-            // load board
-            loadBoard();
-          }
-          //
-          getUserStreamList();
+          print('load board stream message');
+          data.value = message.content;
+          drawContent();
+
+          // load board
+          // loadBoard();
+
+          // load user stream
+          // getUserStreamList();
         }
       }
     } catch (e) {
-      log('$e');
+      print('$e');
     }
   }
 
   @override
   void onClose() {
     removeUserStreamToBoard();
+    streamingConnectionHandler.close();
     super.onClose();
   }
 
@@ -59,15 +71,15 @@ class WhiteboardController extends GetxController {
   Future<void> loadBoard() async {
     final uuid = Get.parameters['id'];
     if (uuid != null) {
-      log('load board = $uuid');
+      print('load board = $uuid');
       board = await client.board.getBoard(uuid);
       boardId = board!.id!;
-      log('board id = $boardId');
+      print('board id = $boardId');
       userId = sessionManager.signedInUser!.id!;
-      log('user id = $userId');
+      print('user id = $userId');
       data.value = board!.content;
       //
-      addUserStreamToBoard();
+      // addUserStreamToBoard();
       // draw
       drawContent();
     } else {
@@ -84,27 +96,29 @@ class WhiteboardController extends GetxController {
       final content = jsonEncode(json);
 
       try {
-        // get cover
-        drawingController.getImageData().then((cover) async {
-          // save board
-          await client.board.saveBoard(board!.id!, content, cover!);
-          log('Save board = ${board!.uuid}');
-
-          // send message stream
-          client.board.sendStreamMessage(
-            Board(
-              id: board!.id,
-              uuid: board!.uuid,
-              title: board!.title,
-              content: content,
-              modifiedAt: DateTime.now(),
-              ownerId: sessionManager.signedInUser!.id!,
-            ),
-          );
+        // send message stream
+        client.board
+            .sendStreamMessage(
+          Board(
+            id: board!.id,
+            uuid: board!.uuid,
+            title: board!.title,
+            content: content,
+            modifiedAt: DateTime.now(),
+            ownerId: sessionManager.signedInUser!.id!,
+          ),
+        )
+            .then((c) {
+          //save board
+          drawingController.getImageData().then((cover) async {
+            await client.board.saveBoard(board!.id!, content, cover!).then((_) {
+              print('Save board = ${board!.uuid}');
+            });
+          });
         });
       } catch (e) {
         //
-        log('$e');
+        print('$e');
       }
     }
   }
@@ -118,64 +132,59 @@ class WhiteboardController extends GetxController {
     // parse paint content
     for (var paint in jsonContent) {
       if (paint['type'] == "SmoothLine") {
-        log('add smooth line');
+        //print('add smooth line');
         listPaints.add(SmoothLine.fromJson(paint));
       }
 
       if (paint['type'] == "SimpleLine") {
-        log('Add paint simple line');
+        //print('Add paint simple line');
         listPaints.add(SimpleLine.fromJson(paint));
       }
 
       if (paint['type'] == "StraightLine") {
-        log('Add paint straight line');
+        //print('Add paint straight line');
         listPaints.add(StraightLine.fromJson(paint));
       }
 
-      if (paint['type'] == "Triangle") {
-        log('Add paint triangle');
-        listPaints.add(Triangle.fromJson(paint));
-      }
-
       if (paint['type'] == "Rectangle") {
-        log('Add paint rectangle');
+        //print('Add paint rectangle');
         listPaints.add(Rectangle.fromJson(paint));
       }
 
       if (paint['type'] == "Circle") {
-        log('Add paint circle');
+        //print('Add paint circle');
         listPaints.add(Circle.fromJson(paint));
       }
 
       if (paint['type'] == "Eraser") {
-        log('Add paint eraser');
+        //print('Add paint eraser');
         listPaints.add(Eraser.fromJson(paint));
       }
     }
 
     // draw
-    log('redraw!');
+    print('redraw!');
     drawingController.addContents(listPaints);
   }
 
   // get user stream list
   getUserStreamList() async {
-    log('find user in board id = $boardId');
+    print('find user in board id = $boardId');
 
     List<UserStream> userStream =
         await client.userStream.getListUserStreamFromBoard(boardId);
-    log('Found ${userStream.length} users in board id = $boardId');
+    print('Found ${userStream.length} users in board id = $boardId');
     listUserStream.value = userStream;
   }
 
   addUserStreamToBoard() async {
-    log('add user stream');
+    print('add user stream');
     await client.userStream.addUserStreamToBoard(boardId, userId);
     await getUserStreamList();
   }
 
   removeUserStreamToBoard() async {
-    log('remove user stream');
+    print('remove user stream');
     await client.userStream.removeUserStreamFromBoard(boardId, userId);
     await getUserStreamList();
   }

@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:jamboard_flutter/app/routes/app_pages.dart';
-import '../../../../serverpod.dart';
 import '../../../data/utils/responsive_utils.dart';
-import '../../../views/views/appbar_view.dart';
-import '../../../views/views/avatar_icon_view.dart';
 import '../controllers/home_controller.dart';
 import '../../../views/views/board_thumbnail_view.dart';
 
@@ -17,15 +14,43 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(
-        context: context,
-        title: 'Whiteboard',
-        action: AvatarIconView(
-          user: sessionManager.signedInUser,
-          onTap: () {
-            log('goto profile page');
-          },
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Get.offAllNamed(Routes.HOME),
+          icon: Icon(Icons.dashboard_outlined),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  TextEditingController textEditingController =
+                      TextEditingController();
+                  return AlertDialog(
+                    title: Text('Open board'),
+                    content: TextFormField(
+                      controller: textEditingController,
+                      decoration: InputDecoration(hintText: 'Board uuid'),
+                    ),
+                    actions: [
+                      FilledButton(
+                        onPressed: () {
+                          if (textEditingController.text.isNotEmpty) {
+                            Get.offAllNamed(Routes.WHITEBOARD2,
+                                parameters: {"id": textEditingController.text});
+                          }
+                        },
+                        child: Text('Open'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.file_open),
+          )
+        ],
       ),
       body: Obx(
         () => RefreshIndicator(
@@ -49,7 +74,7 @@ class HomeView extends GetView<HomeController> {
                 board: board,
                 onTap: () {
                   Get.toNamed(
-                    Routes.WHITEBOARD,
+                    Routes.WHITEBOARD2,
                     parameters: {"id": board.uuid!},
                   );
                 },
