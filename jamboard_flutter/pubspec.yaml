@@ -10,11 +10,8 @@ dependencies:
   cupertino_icons: ^1.0.5
   flutter:
     sdk: flutter
-  # flutter_drawing_board: ^0.7.0+2
   flutter_drawing_board:
     path: ../plugins/flutter_drawing_board
-  whiteboardkit:
-    path: ../plugins/whiteboardkit
 
   get: 4.6.6
   jamboard_client:
@@ -23,7 +20,6 @@ dependencies:
   serverpod_auth_shared_flutter: 2.0.1
   serverpod_chat_flutter: 2.0.1
   serverpod_flutter: 2.0.1
-  # whiteboard: ^0.0.2
 
 dev_dependencies:
   flutter_lints: ">=3.0.0 <5.0.0"
