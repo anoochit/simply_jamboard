@@ -14,8 +14,7 @@ class WhiteboardController extends GetxController {
   Board? board;
 
   late StreamingConnectionHandler? connectionHandler;
-  DrawingController drawingController = DrawingController();
-
+  late DrawingController drawingController;
   RxInt socketStatus = 0.obs;
 
   late Stream<SerializableModel> boardStream;
@@ -25,6 +24,8 @@ class WhiteboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    drawingController = DrawingController();
 
     loadBoard();
 
@@ -48,26 +49,25 @@ class WhiteboardController extends GetxController {
       drawingController.getImageData().then((image) {
         if (image != null) {
           client.board.saveBoard(board!.id!, jsonContent, image).then((v) {
-            log('save board');
+            log('board saved');
+            try {
+              // sent stream message
+              log('sent stream message');
+              client.board.sendStreamMessage(Board(
+                  title: board!.title,
+                  content: jsonContent,
+                  modifiedAt: DateTime.now(),
+                  ownerId: board!.ownerId));
+            } catch (e) {
+              log('$e');
+              Get.snackbar('Error', '$e');
+            }
           });
         } else {
           log('cannot save board with cover image');
           Get.snackbar('Error', 'cannot save board with cover image');
         }
       });
-    } catch (e) {
-      log('$e');
-      Get.snackbar('Error', '$e');
-    }
-
-    try {
-      // sent stream message
-      log('sent stream message');
-      client.board.sendStreamMessage(Board(
-          title: board!.title,
-          content: jsonContent,
-          modifiedAt: DateTime.now(),
-          ownerId: board!.ownerId));
     } catch (e) {
       log('$e');
       Get.snackbar('Error', '$e');
@@ -88,7 +88,6 @@ class WhiteboardController extends GetxController {
         try {
           // write
           data.value = board!.content;
-          log(data.value);
           drawContent();
         } catch (e) {
           log('$e');
@@ -100,8 +99,10 @@ class WhiteboardController extends GetxController {
   // open stream
   openStream() async {
     log('open stream');
+    // open stream connection
     client.openStreamingConnection();
 
+    // check stream status
     client.addStreamingConnectionStatusListener(() {
       setStreamStatus();
     });
@@ -112,6 +113,7 @@ class WhiteboardController extends GetxController {
         //
         if (message is Board) {
           log('found board stream message');
+          loadBoard();
         }
       }
     } catch (e) {
@@ -142,7 +144,7 @@ class WhiteboardController extends GetxController {
 
   // close stream
   closeStream() async {
-    client.board.resetStream();
+    drawingController.dispose();
     await client.closeStreamingConnection();
   }
 
@@ -185,7 +187,8 @@ class WhiteboardController extends GetxController {
     }
 
     // draw
-    log('redraw!');
+    log('content lenght = ${listPaints.length}');
+    log('redraw');
     drawingController.addContents(listPaints);
   }
 }

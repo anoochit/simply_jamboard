@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
-import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:get/get.dart';
 import 'package:jamboard_flutter/app/routes/app_pages.dart';
 import '../controllers/whiteboard_controller.dart';
@@ -13,12 +12,15 @@ class WhiteboardView extends GetView<WhiteboardController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Get.offAllNamed(Routes.HOME),
-          icon: Icon(Icons.dashboard_outlined),
+          icon: const Icon(Icons.dashboard_outlined),
         ),
         actions: [
           IconButton(
-              onPressed: () => controller.drawingController.clear(),
-              icon: Icon(Icons.delete)),
+              onPressed: () {
+                controller.drawingController.clear();
+                controller.saveBoard();
+              },
+              icon: const Icon(Icons.delete)),
           Obx(
             () => Icon(
               Icons.circle,
@@ -30,7 +32,7 @@ class WhiteboardView extends GetView<WhiteboardController> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainer,
@@ -54,9 +56,7 @@ class WhiteboardView extends GetView<WhiteboardController> {
               width: MediaQuery.sizeOf(context).width,
               height: MediaQuery.sizeOf(context).height,
             ),
-            onPointerUp: (p) {
-              controller.saveBoard();
-            },
+            onPointerUp: (p) => controller.saveBoard(),
           ),
         ),
       ),

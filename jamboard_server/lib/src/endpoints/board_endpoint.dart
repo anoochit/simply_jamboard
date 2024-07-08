@@ -73,6 +73,7 @@ class BoardEndpoint extends Endpoint {
   @override
   Future<void> streamClosed(StreamingSession session) async {
     session.log('Stream closed');
+    session.messages.removeListener('channel', (_) {});
   }
 
   // stream handle message
