@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,7 @@ class Whiteboard2Controller extends GetxController {
 
   @override
   void onClose() {
-    whiteboardController.close();
+    // whiteboardController.close();
     streamingConnectionHandler.close();
     super.onClose();
   }
@@ -57,39 +58,44 @@ class Whiteboard2Controller extends GetxController {
       } else {
         log('found board ${board!.uuid!}');
         try {
-          whiteboardController.streamController.add(
-            WhiteboardDraw.fromJson(
-              jsonDecode(board!.content),
-            ),
-          );
+          final content = WhiteboardDraw.fromJson(jsonDecode(board!.content));
+          whiteboardController.streamController.add(content);
         } catch (e) {
-          log('cannot load data : $e');
+          log('$e');
         }
       }
     }
   }
 
   openBoardStream() {
-    try {
-      final x = whiteboardController.draw?.toJson();
-      log('$x');
-    } catch (e) {
-      log('$e');
-    }
+    whiteboardController.onChange().listen(
+      (draw) {
+        log('paint');
+        if (draw != null) {
+          // draw json string
+          final drawJson = jsonEncode(draw.toJson());
 
-    whiteboardController.onChange().listen((draw) {
-      //
-      // client.board.sendStreamMessage();
-      final x = jsonEncode(whiteboardController.draw?.toJson());
-      log('$x');
-    });
+          // save board
+          client.board.saveBoard(board!.id!, drawJson, ByteData(0));
+
+          // send stream message
+          client.board.sendStreamMessage(
+            Board(
+                title: board!.title,
+                content: drawJson,
+                modifiedAt: DateTime.now(),
+                ownerId: board!.ownerId),
+          );
+        }
+      },
+    );
   }
 
   openStream() async {
     streamingConnectionHandler = StreamingConnectionHandler(
       client: client,
       listener: (StreamingConnectionHandlerState state) {
-        print('socket state = ${state.status}');
+        log('socket state = ${state.status}');
         if (state.status == StreamingConnectionStatus.connecting) {
           socketStatus.value = 1;
         }
@@ -104,15 +110,16 @@ class Whiteboard2Controller extends GetxController {
 
     streamingConnectionHandler.connect();
 
+    // stream listen
     try {
       await for (var message in client.board.stream) {
         //
         if (message is Board) {
-          print('found board stream message');
+          log('found board stream message');
         }
       }
     } catch (e) {
-      print('$e');
+      log('$e');
     }
   }
 }

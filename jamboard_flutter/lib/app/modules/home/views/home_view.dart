@@ -37,7 +37,7 @@ class HomeView extends GetView<HomeController> {
                       FilledButton(
                         onPressed: () {
                           if (textEditingController.text.isNotEmpty) {
-                            Get.offAllNamed(Routes.WHITEBOARD2,
+                            Get.offAllNamed(Routes.WHITEBOARD,
                                 parameters: {"id": textEditingController.text});
                           }
                         },
@@ -61,7 +61,7 @@ class HomeView extends GetView<HomeController> {
             });
           },
           child: GridView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: ResponsiveUtils.gridItem(context),
               mainAxisSpacing: 12.0,
@@ -74,7 +74,7 @@ class HomeView extends GetView<HomeController> {
                 board: board,
                 onTap: () {
                   Get.toNamed(
-                    Routes.WHITEBOARD2,
+                    Routes.WHITEBOARD,
                     parameters: {"id": board.uuid!},
                   );
                 },

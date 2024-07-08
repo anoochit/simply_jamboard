@@ -25,8 +25,7 @@ class BoardEndpoint extends Endpoint {
     final uuid = Uuid().v4();
     final row = Board(
       title: title,
-      content:
-          '{"lines":[{"points":[{"x":0,"y":0},{"x":1,"y":1}],"color":"4280391411","width":0,"duration":1298,"wipe":true}],"width":300,"height":600}',
+      content: '[]',
       ownerId: userInfo!.userId,
       uuid: uuid,
       modifiedAt: DateTime.now(),

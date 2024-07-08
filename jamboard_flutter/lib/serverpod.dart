@@ -27,11 +27,11 @@ Future<void> initializeServerpodClient() async {
 
   sessionManager.addListener(() {
     if (sessionManager.isSignedIn) {
-      print('user signed in');
+      log('user signed in');
     } else {
-      print('user signed out');
+      log('user signed out');
     }
   });
 
-  print('Serverpod initialized');
+  log('Serverpod initialized');
 }

@@ -8,16 +8,6 @@ class UserStreamIconView extends GetView<WhiteboardController> {
   const UserStreamIconView({super.key});
   @override
   Widget build(BuildContext context) {
-    final listAvatars = controller.listUserStream;
-    return Obx(
-      () => Wrap(
-        children: List.generate(listAvatars.length, (index) {
-          return AvatarIconView(
-            user: listAvatars[index].userInfo,
-            onTap: null,
-          );
-        }),
-      ),
-    );
+    return Container();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_drawing_board/flutter_drawing_board.dart';
+import 'package:flutter_drawing_board/paint_contents.dart';
 import 'package:get/get.dart';
 import 'package:jamboard_flutter/app/routes/app_pages.dart';
 import '../controllers/whiteboard_controller.dart';
@@ -14,6 +15,19 @@ class WhiteboardView extends GetView<WhiteboardController> {
           onPressed: () => Get.offAllNamed(Routes.HOME),
           icon: Icon(Icons.dashboard_outlined),
         ),
+        actions: [
+          IconButton(
+              onPressed: () => controller.drawingController.clear(),
+              icon: Icon(Icons.delete)),
+          Obx(
+            () => Icon(
+              Icons.circle,
+              color: (controller.socketStatus.value == 2)
+                  ? Colors.green
+                  : Colors.red,
+            ),
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,8 +48,6 @@ class WhiteboardView extends GetView<WhiteboardController> {
           child: DrawingBoard(
             clipBehavior: Clip.antiAliasWithSaveLayer,
             controller: controller.drawingController,
-            // showDefaultActions: true,
-            // showDefaultTools: true,
             boardPanEnabled: false,
             boardScaleEnabled: false,
             background: SizedBox(
