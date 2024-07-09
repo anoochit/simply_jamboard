@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:jamboard_flutter/app/views/views/avatar_icon_view.dart';
 
 import '../../modules/whiteboard/controllers/whiteboard_controller.dart';
 

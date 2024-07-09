@@ -17,7 +17,7 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () => Get.offAllNamed(Routes.HOME),
-          icon: Icon(Icons.dashboard_outlined),
+          icon: const Icon(Icons.dashboard_outlined),
         ),
         actions: [
           IconButton(
@@ -28,10 +28,10 @@ class HomeView extends GetView<HomeController> {
                   TextEditingController textEditingController =
                       TextEditingController();
                   return AlertDialog(
-                    title: Text('Open board'),
+                    title: const Text('Open board'),
                     content: TextFormField(
                       controller: textEditingController,
-                      decoration: InputDecoration(hintText: 'Board uuid'),
+                      decoration: const InputDecoration(hintText: 'Board uuid'),
                     ),
                     actions: [
                       FilledButton(
@@ -41,14 +41,14 @@ class HomeView extends GetView<HomeController> {
                                 parameters: {"id": textEditingController.text});
                           }
                         },
-                        child: Text('Open'),
+                        child: const Text('Open'),
                       ),
                     ],
                   );
                 },
               );
             },
-            icon: Icon(Icons.file_open),
+            icon: const Icon(Icons.file_open),
           )
         ],
       ),
